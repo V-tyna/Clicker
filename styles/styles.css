@@ -1,0 +1,6 @@
+#root-container {
+	max-width: 60rem;
+	height: 90vh;
+	background-color: rgb(183, 217, 255);
+	border-radius: 1rem;
+}
