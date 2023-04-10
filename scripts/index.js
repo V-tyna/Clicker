@@ -1,14 +1,20 @@
 const auth = new Authorization();
 
-const isUserData = auth.getDataFromLocalStorage();
+const isUser = auth.user;
+console.log(isUser);
 
-if (!isUserData) {
+if (!isUser) {
 	auth.renderLayout('auth-layout', authTemplate);
+	auth.changeBackgroundLoop('main-backgrounds', '.avif');
 	auth.authListeners();
 } else {
-	const clickerGame = new ClickerGame(0);
+	const { nick, totalScore, clicksToWin, level, time } = isUser;
+	const clickerGame = new ClickerGame(totalScore, clicksToWin, level, time);
+	console.log('GAME: ', clickerGame);
+	clickerGame.changeBackgroundOnce('game-backgrounds', 1, '.avif');
 	clickerGame.renderLayout('game-layout', clickerTemplate);
-	clickerGame.gameEventListeners();
+	clickerGame.setUserNick(nick);
+	clickerGame.renderMonster();
+	clickerGame.gameListeners();
+	clickerGame.startTimer();
 }
-
-changeMainBackground();

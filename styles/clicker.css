@@ -1,0 +1,147 @@
+.game-layout {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.game-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.monster-container {
+	padding-top: 3rem;
+	padding-bottom: 7rem;
+	width: 100%;
+	height: 100%;
+}
+
+.monster {
+	width: 300px;
+	height: 300px;
+	background-size: contain;
+	position: relative;
+	animation-name: moveMonster;
+	animation-duration: 20s;
+	animation-timing-function: linear;
+	animation-delay: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+.game-header,
+.game-footer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	height: 3rem;
+	width: 100%;
+	background-color: #dbe4c6d8;
+	border-radius: 1rem 1rem 0 0;
+}
+
+.game-footer {
+	top: auto;
+	bottom: 0;
+	height: 7rem;
+	border-radius: 0 0 1rem 1rem;
+}
+
+#counter-view,
+#total-score,
+#time {
+	font-size: 1.5rem;
+	color: #e86a33;
+	width: 5rem;
+}
+
+#time {
+	display: inline-block;
+}
+
+#clicks-number,
+#level,
+#nickname {
+	font-size: 1.5rem;
+	color: #41644a;
+}
+
+@keyframes moveMonster {
+	0% {
+		left: 0px;
+		top: 0px;
+	}
+	7% {
+		left: 200px;
+		top: 0px;
+	}
+	14% {
+		left: 400px;
+		top: 0px;
+	}
+	20% {
+		left: 600px;
+		top: 0px;
+	}
+	27% {
+		right: 600px;
+		top: 200px;
+	}
+	33% {
+		right: 600px;
+		top: 400px;
+	}
+	40% {
+		right: 600px;
+		top: 600px;
+	}
+	47% {
+		left: 200px;
+		top: 200px;
+	}
+	53% {
+		left: 400px;
+		top: 200px;
+	}
+	60% {
+		left: 600px;
+		top: 200px;
+	}
+	67% {
+		left: 200px;
+		top: 400px;
+	}
+	73% {
+		left: 600px;
+		top: 200px;
+	}
+	77% {
+		left: 600px;
+		top: 600px;
+	}
+	80% {
+		left: 0px;
+		top: 0px;
+	}
+	87% {
+		left: 400px;
+		top: 200px;
+	}
+	93% {
+		left: 0px;
+		top: 400px;
+	}
+	100% {
+		left: 0px;
+		top: 0px;
+	}
+}

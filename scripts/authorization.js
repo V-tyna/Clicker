@@ -1,9 +1,9 @@
 class Authorization extends Rendering {
 	constructor(className, templateFn) {
 		super(className, templateFn);
-		this.user = {
-			score: 0,
-		};
+		this.user = localStorage.getItem('userData')
+			? JSON.parse(localStorage.getItem('userData'))
+			: null;
 	}
 
 	authListeners() {
@@ -17,26 +17,15 @@ class Authorization extends Rendering {
 				let userName = document.getElementById('userName');
 				let email = document.getElementById('email');
 
-				this.user.name = userName.value;
-				this.user.nick = nickname.value;
-				this.user.email = email.value;
+				this.user = new User(email.value, userName.value, nickname.value);
+				this.user.setDataToLocalStorage();
 
 				nickname.innerText = '';
 				userName.innerText = '';
 				email.innerText = '';
 
-				this.setDataToLocalStorage();
 				window.location.reload();
 			});
 		}
-	}
-
-	setDataToLocalStorage() {
-		localStorage.setItem('userData', JSON.stringify(this.user));
-	}
-
-	getDataFromLocalStorage() {
-		const userData = localStorage.getItem('userData');
-		return userData && JSON.parse(userData);
 	}
 }
