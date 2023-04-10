@@ -1,12 +1,14 @@
-const rootContainer = document.getElementById('root-container');
-const clickButton = document.getElementById('main-btn');
-const counterView = document.getElementById('counter-view');
+const auth = new Authorization();
 
-let counter = 0;
-counterView.innerHTML = counter;
+const isUserData = auth.getDataFromLocalStorage();
 
-clickButton.addEventListener('click', () => {
-	counter++;
-	counterView.innerHTML = counter;
-	console.log('Works, counter');
-});
+if (!isUserData) {
+	auth.renderLayout('auth-layout', authTemplate);
+	auth.authListeners();
+} else {
+	const clickerGame = new ClickerGame(0);
+	clickerGame.renderLayout('game-layout', clickerTemplate);
+	clickerGame.gameEventListeners();
+}
+
+changeMainBackground();

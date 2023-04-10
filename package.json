@@ -1,0 +1,23 @@
+{
+  "name": "clicker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "start index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/V-tyna/Clicker.git"
+  },
+  "keywords": [
+    "clicker",
+    "game"
+  ],
+  "author": "Valentyna Boiko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/V-tyna/Clicker/issues"
+  },
+  "homepage": "https://github.com/V-tyna/Clicker#readme"
+}

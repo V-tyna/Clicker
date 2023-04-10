@@ -1,0 +1,73 @@
+.auth-layout {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.auth-form-container {
+	width: 600px;
+	height: 500px;
+	background-color: rgba(255, 255, 255, 0.7);
+	border-radius: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 2rem;
+}
+
+.auth-form-container h2 {
+	font-size: 2rem;
+	color: #465e52;
+}
+
+.create-user-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+.input-area {
+	display: flex;
+	width: 100%;
+	margin: 0.5rem;
+	align-items: center;
+}
+
+.input-area label {
+	flex: 1;
+	text-align: center;
+	font-size: 1.2rem;
+	color: #465e52;
+	font-weight: 500;
+}
+
+.input-area input {
+	font-family: 'DynaPuff', cursive;
+	font-size: 1.1rem;
+	flex: 3;
+	height: 2.5rem;
+	outline: none;
+	border: none;
+	border-radius: 0.5rem;
+	padding-left: 2rem;
+	caret-color: #465e52;
+}
+
+.input-area input::placeholder {
+	color: #94af9f;
+	font-size: 0.7rem;
+}
+
+.input-area input:focus {
+	background-color: #dbe4c6;
+}
+
+/* .create-user-btn {
+	width: 5rem;
+	height: 2rem;
+	margin-top: 2rem;
+} */
