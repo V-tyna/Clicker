@@ -149,6 +149,7 @@ class ClickerGame extends Rendering {
 				mins: 0,
 				seconds: 0,
 			},
+			timeStr: '',
 			totalScore: 0,
 		};
 		this.updateUserDataInLS(initialUser);
@@ -168,12 +169,8 @@ class ClickerGame extends Rendering {
 	}
 
 	startNewGame() {
-		const currentUser = this.getUserData();
-
 		this.resetUserData();
-		this.removeLayout();
 		this.stopTimer();
-		this.runGame('game-layout', clickerTemplate, currentUser.nick);
 		window.location.reload();
 	}
 
