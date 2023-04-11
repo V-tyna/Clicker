@@ -1,5 +1,8 @@
 class Rendering {
 	constructor() {
+		this.modal = document.getElementById('modalWindow');
+		this.modalBtn = document.getElementById('start-new-game');
+		this.modalContent = document.querySelector('.modal-text');
 		this.root = document.getElementById('root-container');
 		this.intervalId = null;
 		this.layout = document.createElement('div');
@@ -13,6 +16,30 @@ class Rendering {
 
 	removeLayout() {
 		this.root.removeChild(this.layout);
+	}
+
+	renderModalWindow(user) {
+		this.modal.style.display = 'block';
+		this.modalBtn.innerText = 'Start new game';
+		this.modalContent.innerHTML = gameOverModalTemplate(user);
+
+		this.removeModalWindowListeners();
+	}
+
+	removeModalWindowListeners() {
+		const span = document.getElementById('close-modal-window');
+
+		window.addEventListener('click', (event) => {
+			if (event.target == this.modal) {
+				this.modal.style.display = 'none';
+			}
+		});
+
+		span.addEventListener('click', this.closeModalWindow.bind(this));
+	}
+
+	closeModalWindow() {
+		this.modal.style.display = 'none';
 	}
 
 	setBackground(folder, img, resolution) {

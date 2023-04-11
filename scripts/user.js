@@ -3,6 +3,7 @@ class User {
 		this.user = {
 			clicksToWin: 3,
 			email,
+			image: 1,
 			level: 1,
 			name,
 			nick,

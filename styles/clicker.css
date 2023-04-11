@@ -33,6 +33,7 @@
 	animation-delay: 1s;
 	animation-iteration-count: infinite;
 	animation-direction: alternate;
+	cursor: pointer;
 }
 
 .game-header,
@@ -56,7 +57,7 @@
 	border-radius: 0 0 1rem 1rem;
 }
 
-#counter-view,
+#current-score,
 #total-score,
 #time {
 	font-size: 1.5rem;

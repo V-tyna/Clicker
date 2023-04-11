@@ -8,13 +8,14 @@ if (!isUser) {
 	auth.changeBackgroundLoop('main-backgrounds', '.avif');
 	auth.authListeners();
 } else {
-	const { nick, totalScore, clicksToWin, level, time } = isUser;
-	const clickerGame = new ClickerGame(totalScore, clicksToWin, level, time);
-	console.log('GAME: ', clickerGame);
+	const { nick, totalScore, clicksToWin, image, level, time } = isUser;
+	const clickerGame = new ClickerGame(
+		totalScore,
+		clicksToWin,
+		level,
+		time,
+		image
+	);
 	clickerGame.changeBackgroundOnce('game-backgrounds', 1, '.avif');
-	clickerGame.renderLayout('game-layout', clickerTemplate);
-	clickerGame.setUserNick(nick);
-	clickerGame.renderMonster();
-	clickerGame.gameListeners();
-	clickerGame.startTimer();
+	clickerGame.runGame('game-layout', clickerTemplate, nick);
 }
