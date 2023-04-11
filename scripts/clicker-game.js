@@ -4,6 +4,7 @@ class ClickerGame extends Rendering {
 		numberOfClicksToWin,
 		level,
 		timeObj,
+		timeStr,
 		img,
 		className,
 		templateFn,
@@ -14,6 +15,7 @@ class ClickerGame extends Rendering {
 		this.image = img;
 		this.level = level;
 		this.time = timeObj;
+		this.timeStr = timeStr;
 		this.numberOfClicksToWin = numberOfClicksToWin;
 		this.totalScore = initialTotalScore;
 		this.timerId = null;
@@ -49,9 +51,9 @@ class ClickerGame extends Rendering {
 		document.querySelector('.timer-container').removeChild(timerElem);
 
 		const startBtn = document.getElementById('start-new-game');
+		const user = this.getUserData();
 
 		this.stopTimer();
-		const user = this.getUserData();
 		this.renderModalWindow(user);
 
 		if (startBtn) {
@@ -62,6 +64,31 @@ class ClickerGame extends Rendering {
 		}
 	}
 
+	getHumanReadableTime(seconds, mins) {
+		let secStr = '00';
+		let minStr = '00';
+
+		secStr = seconds;
+		if (seconds < 10) {
+			secStr = '0' + seconds;
+		}
+		if (seconds > 59) {
+			secStr = '00';
+			seconds = 0;
+			++mins;
+		}
+		if (mins < 10) {
+			minStr = '0' + mins;
+		}
+		if (mins >= 10) {
+			minStr = mins;
+		}
+		if (mins >= 59 && seconds >= 59) {
+			this.stopTimer();
+		}
+		return { secStr, minStr };
+	}
+
 	getUserData() {
 		const prevUserData = JSON.parse(localStorage.getItem('userData'));
 		return {
@@ -70,6 +97,7 @@ class ClickerGame extends Rendering {
 			image: this.image,
 			level: this.level,
 			time: { ...this.time },
+			timeStr: this.timeStr,
 			totalScore: this.totalScore,
 		};
 	}
@@ -92,11 +120,12 @@ class ClickerGame extends Rendering {
 	nextLevel() {
 		const user = this.getUserData();
 		this.updateUserDataInLS(user);
+		this.clicksCounter = 0;
+		this.image = user.image;
 		this.initialTotalScore = user.totalScore;
 		this.level = user.level;
-		this.image = user.image;
-		this.clicksCounter = 0;
 		this.numberOfClicksToWin = user.clicksToWin;
+		this.timeStr = user.timeStr;
 
 		this.removeLayout();
 		this.stopTimer();
@@ -139,7 +168,6 @@ class ClickerGame extends Rendering {
 	}
 
 	startNewGame() {
-		console.log('new game');
 		const currentUser = this.getUserData();
 
 		this.resetUserData();
@@ -154,29 +182,13 @@ class ClickerGame extends Rendering {
 		if (timer) {
 			let seconds = this.time.seconds;
 			let mins = this.time.mins;
-			let secStr = '00';
-			let minStr = '00';
+
 			this.timerId = setInterval(() => {
 				++seconds;
-				secStr = seconds;
-				if (seconds < 10) {
-					secStr = '0' + seconds;
-				}
-				if (seconds > 59) {
-					secStr = '00';
-					seconds = 0;
-					++mins;
-				}
-				if (mins < 10) {
-					minStr = '0' + mins;
-				}
-				if (mins >= 10) {
-					minStr = mins;
-				}
-				if (mins >= 59 && seconds >= 59) {
-					this.stopTimer();
-				}
-				timer.innerText = minStr + ':' + secStr;
+				const { secStr, minStr } = this.getHumanReadableTime(seconds, mins);
+
+				this.timeStr = minStr + ':' + secStr;
+				timer.innerText = this.timeStr;
 				this.time.seconds = seconds;
 				this.time.mins = mins;
 			}, 1000);

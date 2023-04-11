@@ -17,15 +17,40 @@ class Authorization extends Rendering {
 				let userName = document.getElementById('userName');
 				let email = document.getElementById('email');
 
-				this.user = new User(email.value, userName.value, nickname.value);
-				this.user.setDataToLocalStorage();
+				const isValid = this.validateInputs([
+					email.value,
+					userName.value,
+					nickname.value,
+				]);
 
-				nickname.innerText = '';
-				userName.innerText = '';
-				email.innerText = '';
+				if (isValid) {
+					this.user = new User(email.value, userName.value, nickname.value);
+					this.user.setDataToLocalStorage();
 
-				window.location.reload();
+					nickname.innerText = '';
+					userName.innerText = '';
+					email.innerText = '';
+
+					window.location.reload();
+				} else {
+					this.showErrorMessage(
+						createUserForm,
+						'Please fill all fields and try again.',
+						'#E86A33'
+					);
+				}
 			});
 		}
+	}
+
+	showErrorMessage(elem, msg, color) {
+		const errorMessage = document.createElement('p');
+		errorMessage.innerText = msg;
+		errorMessage.style.color = color;
+		elem.appendChild(errorMessage);
+	}
+
+	validateInputs(inputs) {
+		return inputs.every((input) => !!input.trim() === true);
 	}
 }

@@ -1,4 +1,5 @@
 const gameOverModalTemplate = (user) => {
+	console.log('Modal user: ', user);
 	return `
     <h1>Congrats, you win!</h1>
     <div class="modal-text-str">
@@ -11,9 +12,7 @@ const gameOverModalTemplate = (user) => {
       <h3>Level: &nbsp;&nbsp;</h3><p>${user.level - 1}</p>
     </div>
     <div class="modal-text-str">
-      <h3>Time: &nbsp;&nbsp;</h3><p> minutes - ${user.time.mins}, seconds - ${
-		user.time.seconds
-	}</p>
+      <h3>Time: &nbsp;&nbsp;</h3><p>${user.timeStr}</p>
     </div>
   `;
 };

@@ -60,9 +60,9 @@
 #current-score,
 #total-score,
 #time {
-	font-size: 1.5rem;
+	font-size: 1.4rem;
 	color: #e86a33;
-	width: 5rem;
+	width: 4rem;
 }
 
 #time {
@@ -72,7 +72,7 @@
 #clicks-number,
 #level,
 #nickname {
-	font-size: 1.5rem;
+	font-size: 1.4rem;
 	color: #41644a;
 }
 
@@ -144,5 +144,78 @@
 	100% {
 		left: 0px;
 		top: 0px;
+	}
+}
+
+@media (max-width: 640px) {
+	@keyframes moveMonster {
+		0% {
+			left: 0px;
+			top: 0px;
+		}
+		7% {
+			left: 4rem;
+			top: 0px;
+		}
+		14% {
+			left: 7rem;
+			top: 0px;
+		}
+		20% {
+			left: 12rem;
+			top: 0px;
+		}
+		27% {
+			right: 12rem;
+			top: 4rem;
+		}
+		33% {
+			right: 12rem;
+			top: 7rem;
+		}
+		40% {
+			right: 12rem;
+			top: 12rem;
+		}
+		47% {
+			left: 4rem;
+			top: 4rem;
+		}
+		53% {
+			left: 7rem;
+			top: 4rem;
+		}
+		60% {
+			left: 12rem;
+			top: 4rem;
+		}
+		67% {
+			left: 4rem;
+			top: 7rem;
+		}
+		73% {
+			left: 12rem;
+			top: 4rem;
+		}
+		77% {
+			left: 12rem;
+			top: 12rem;
+		}
+		80% {
+			left: 0px;
+			top: 0px;
+		}
+		87% {
+			left: 7rem;
+			top: 4rem;
+		}
+		93% {
+			left: 0px;
+			top: 7rem;
+		}
+		100% {
+			left: 0px;
+			top: 0px;
+		}
 	}
 }
