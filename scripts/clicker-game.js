@@ -22,6 +22,24 @@ class ClickerGame extends Rendering {
 		);
 	}
 
+	initGameVariables(
+		initialTotalScore,
+		numberOfClicksToWin,
+		level,
+		timeObj,
+		timeStr,
+		img
+	) {
+		this.clicksCounter = 0;
+		this.image = img;
+		this.level = level;
+		this.time = timeObj;
+		this.timeStr = timeStr;
+		this.numberOfClicksToWin = numberOfClicksToWin;
+		this.totalScore = initialTotalScore;
+		this.timerId = null;
+	}
+
 	gameListeners() {
 		const clicksToWin = document.getElementById('clicks-number');
 		const currentScore = document.getElementById('current-score');
@@ -51,7 +69,7 @@ class ClickerGame extends Rendering {
 		}
 	}
 
-	gameOver(monsterElem, timerElem) {
+	gameOver(monsterElem) {
 		const user = this.getUserData();
 		document.querySelector('.monster-container').removeChild(monsterElem);
 
@@ -74,21 +92,21 @@ class ClickerGame extends Rendering {
 		let minStr = '00';
 
 		secStr = seconds;
-		if (seconds < 10) {
+		if (seconds < MIN_TWO_DIGIT_VALUE) {
 			secStr = '0' + seconds;
 		}
-		if (seconds > 59) {
+		if (seconds > MAX_SECONDS) {
 			secStr = '00';
 			seconds = 0;
 			++mins;
 		}
-		if (mins < 10) {
+		if (mins < MIN_TWO_DIGIT_VALUE) {
 			minStr = '0' + mins;
 		}
-		if (mins >= 10) {
+		if (mins >= MIN_TWO_DIGIT_VALUE) {
 			minStr = mins;
 		}
-		if (mins >= 59 && seconds >= 59) {
+		if (mins >= MAX_GAME_MINUTES && seconds >= MAX_SECONDS) {
 			this.stopTimer();
 		}
 		return { secStr, minStr, seconds, mins };
@@ -105,24 +123,6 @@ class ClickerGame extends Rendering {
 			timeStr: this.timeStr,
 			totalScore: this.totalScore,
 		};
-	}
-
-	initGameVariables(
-		initialTotalScore,
-		numberOfClicksToWin,
-		level,
-		timeObj,
-		timeStr,
-		img
-	) {
-		this.clicksCounter = 0;
-		this.image = img;
-		this.level = level;
-		this.time = timeObj;
-		this.timeStr = timeStr;
-		this.numberOfClicksToWin = numberOfClicksToWin;
-		this.totalScore = initialTotalScore;
-		this.timerId = null;
 	}
 
 	modalButtonListener(btnId, proceedFn, proceedFnArgs = []) {
@@ -202,9 +202,9 @@ class ClickerGame extends Rendering {
 		const currentUser = this.getUserData();
 		const initialUser = {
 			...currentUser,
-			clicksToWin: 3,
-			image: 1,
-			level: 1,
+			clicksToWin: BASIC_NUMBER_OF_CLICKS_TO_WIN,
+			image: INITIAL_IMAGE,
+			level: INITIAL_LEVEL,
 			time: {
 				mins: 0,
 				seconds: 0,
@@ -252,7 +252,7 @@ class ClickerGame extends Rendering {
 			timer.innerText = this.timeStr;
 			this.time.seconds = seconds;
 			this.time.mins = mins;
-		}, 1000);
+		}, 10);
 	}
 
 	stopTimer() {

@@ -1,10 +1,10 @@
 class User {
 	constructor(email, name, nick) {
 		this.user = {
-			clicksToWin: 3,
+			clicksToWin: BASIC_NUMBER_OF_CLICKS_TO_WIN,
 			email,
-			image: 1,
-			level: 1,
+			image: INITIAL_IMAGE,
+			level: INITIAL_LEVEL,
 			name,
 			nick,
 			time: {
@@ -17,10 +17,5 @@ class User {
 
 	setDataToLocalStorage() {
 		localStorage.setItem('userData', JSON.stringify(this.user));
-	}
-
-	getDataFromLocalStorage() {
-		const userData = localStorage.getItem('userData');
-		return userData && JSON.parse(userData);
 	}
 }

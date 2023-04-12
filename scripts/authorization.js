@@ -1,7 +1,7 @@
 class Authorization extends Rendering {
 	constructor(className, templateFn) {
 		super(className, templateFn);
-		this.user = this.getUser();
+		this.getUser();
 	}
 
 	authListeners() {
@@ -15,13 +15,15 @@ class Authorization extends Rendering {
 				let userName = document.getElementById('userName');
 				let email = document.getElementById('email');
 
-				const isValid = this.validateInputs([
+				const isNotEmpty = this.validateInputs([
 					email.value,
 					userName.value,
 					nickname.value,
 				]);
 
-				if (isValid) {
+				const isEmailValid = this.validateEmail(email.value);
+
+				if (isNotEmpty && isEmailValid) {
 					this.user = new User(email.value, userName.value, nickname.value);
 					this.user.setDataToLocalStorage();
 
@@ -31,9 +33,12 @@ class Authorization extends Rendering {
 
 					window.location.reload();
 				} else {
+					const errorMsg = !isNotEmpty
+						? 'Please fill all fields and try again.'
+						: 'Email is not valid.';
 					this.showErrorMessage(
 						createUserForm,
-						'Please fill all fields and try again.',
+						errorMsg,
 						'#E86A33',
 						'error-message'
 					);
@@ -43,7 +48,7 @@ class Authorization extends Rendering {
 	}
 
 	getUser() {
-		return localStorage.getItem('userData')
+		this.user = localStorage.getItem('userData')
 			? JSON.parse(localStorage.getItem('userData'))
 			: null;
 	}
@@ -54,6 +59,11 @@ class Authorization extends Rendering {
 			localStorage.removeItem('userData');
 			window.location.reload();
 		});
+	}
+
+	validateEmail(email) {
+		const validExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		return email.match(validExp);
 	}
 
 	validateInputs(inputs) {

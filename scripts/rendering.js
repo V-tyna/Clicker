@@ -15,13 +15,10 @@ class Rendering {
 		this.layout.classList.add(className);
 		this.layout.innerHTML = templateFn();
 		this.root.appendChild(this.layout);
+
 		if (auth) {
 			auth.logoutListener();
 		}
-	}
-
-	removeLayout() {
-		this.root.removeChild(this.layout);
 	}
 
 	renderModalWindow(
@@ -38,18 +35,12 @@ class Rendering {
 
 		if (isNeededModalListeners) {
 			document.getElementById('close-modal-window').style.display = 'block';
-			this.removeModalWindowListeners();
+			this.removeModalWindowListener();
 		}
 	}
 
-	removeModalWindowListeners() {
+	removeModalWindowListener() {
 		const span = document.getElementById('close-modal-window');
-
-		window.addEventListener('click', (event) => {
-			if (event.target == this.modal) {
-				this.modal.style.display = 'none';
-			}
-		});
 
 		span.addEventListener('click', this.closeModalWindow.bind(this));
 	}
@@ -75,7 +66,7 @@ class Rendering {
 
 	changeBackgroundLoop(folder, resolution) {
 		let resolutionUrl = resolution;
-		let image = 1;
+		let image = INITIAL_IMAGE;
 		this.setBackground(folder, image, resolutionUrl);
 
 		this.intervalId = setInterval(() => {
@@ -93,6 +84,7 @@ class Rendering {
 		if (this.intervalId) {
 			clearInterval(this.intervalId);
 		}
+
 		this.setBackground(folder, image, resolutionUrl);
 	}
 }
