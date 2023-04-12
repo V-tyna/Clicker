@@ -252,7 +252,7 @@ class ClickerGame extends Rendering {
 			timer.innerText = this.timeStr;
 			this.time.seconds = seconds;
 			this.time.mins = mins;
-		}, 10);
+		}, 1000);
 	}
 
 	stopTimer() {
