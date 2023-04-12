@@ -36,6 +36,15 @@
 	cursor: pointer;
 }
 
+.monster-health {
+	height: 0.5rem;
+	width: 100%;
+	/* padding-left: 15%; */
+	background-color: #e86a33;
+	border-radius: 0.2rem;
+	transition: all 0.3s ease-out;
+}
+
 .game-header,
 .game-footer {
 	display: flex;

@@ -14,16 +14,17 @@
 	font-family: 'DynaPuff', cursive;
 	width: 8rem;
 	height: 2.5rem;
-	margin-top: 2rem;
+	margin-top: 1.5rem;
 	background-color: #465e52;
 	color: #dbe4c6;
 	border: none;
 	border-radius: 0.5rem;
 	transition: all 0.3s ease-in-out;
+	cursor: pointer;
 }
 
 .btn:hover {
-	background-color: #dbe4c6;
+	background-color: #bbd6b8;
 	color: #465e52;
 	transition: all 0.3s ease-in-out;
 }

@@ -17,5 +17,5 @@ if (!isUser) {
 		image
 	);
 	clickerGame.changeBackgroundOnce('game-backgrounds', 1, '.avif');
-	clickerGame.runGame('game-layout', clickerTemplate, nick);
+	clickerGame.runGame('game-layout', clickerTemplate, nick, auth);
 }

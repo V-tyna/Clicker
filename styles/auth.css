@@ -23,6 +23,25 @@
 	color: #465e52;
 }
 
+.logout-btn {
+	width: 6rem;
+	height: 2rem;
+	background-color: #e86a33;
+	color: #f2e3db;
+	border: none;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+
+.logout-btn:hover {
+	background-color: #f2e3db;
+	color: #e86a33;
+	transition: all 0.3s ease-in-out;
+}
+
 .create-user-form {
 	display: flex;
 	flex-direction: column;
@@ -65,9 +84,3 @@
 .input-area input:focus {
 	background-color: #dbe4c6;
 }
-
-/* .create-user-btn {
-	width: 5rem;
-	height: 2rem;
-	margin-top: 2rem;
-} */

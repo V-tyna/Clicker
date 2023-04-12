@@ -7,18 +7,19 @@ class ClickerGame extends Rendering {
 		timeStr,
 		img,
 		className,
+		auth,
 		templateFn,
 		user
 	) {
-		super(className, templateFn, user);
-		this.clicksCounter = 0;
-		this.image = img;
-		this.level = level;
-		this.time = timeObj;
-		this.timeStr = timeStr;
-		this.numberOfClicksToWin = numberOfClicksToWin;
-		this.totalScore = initialTotalScore;
-		this.timerId = null;
+		super(className, templateFn, user, auth);
+		this.initGameVariables(
+			initialTotalScore,
+			numberOfClicksToWin,
+			level,
+			timeObj,
+			timeStr,
+			img
+		);
 	}
 
 	gameListeners() {
@@ -26,12 +27,9 @@ class ClickerGame extends Rendering {
 		const currentScore = document.getElementById('current-score');
 		const level = document.getElementById('level');
 		const monster = document.querySelector('.monster');
+		const monsterHealth = document.querySelector('.monster-health');
 		const timer = document.getElementById('time');
 		const totalScore = document.getElementById('total-score');
-
-		if (this.level > 5) {
-			this.gameOver(monster, timer);
-		}
 
 		if (monster) {
 			clicksToWin.innerText = this.numberOfClicksToWin;
@@ -41,30 +39,37 @@ class ClickerGame extends Rendering {
 
 			monster.addEventListener(
 				'click',
-				this.monsterListener.bind(this, currentScore, totalScore)
+				this.monsterListener.bind(
+					this,
+					currentScore,
+					totalScore,
+					monster,
+					timer,
+					monsterHealth
+				)
 			);
 		}
 	}
 
 	gameOver(monsterElem, timerElem) {
-		document.querySelector('.monster-container').removeChild(monsterElem);
-		document.querySelector('.timer-container').removeChild(timerElem);
-
-		const startBtn = document.getElementById('start-new-game');
 		const user = this.getUserData();
+		document.querySelector('.monster-container').removeChild(monsterElem);
 
 		this.stopTimer();
-		this.renderModalWindow(user);
+		this.renderModalWindow(
+			user,
+			gameOverModalTemplate,
+			'Start new game',
+			'start-new-game',
+			true
+		);
 
-		if (startBtn) {
-			startBtn.addEventListener('click', () => {
-				this.closeModalWindow();
-				this.startNewGame();
-			});
-		}
+		this.modalButtonListener('start-new-game', this.startNewGame);
 	}
 
-	getHumanReadableTime(seconds, mins) {
+	getHumanReadableTime() {
+		let seconds = this.time.seconds;
+		let mins = this.time.mins;
 		let secStr = '00';
 		let minStr = '00';
 
@@ -86,7 +91,7 @@ class ClickerGame extends Rendering {
 		if (mins >= 59 && seconds >= 59) {
 			this.stopTimer();
 		}
-		return { secStr, minStr };
+		return { secStr, minStr, seconds, mins };
 	}
 
 	getUserData() {
@@ -102,34 +107,89 @@ class ClickerGame extends Rendering {
 		};
 	}
 
-	monsterListener(currentScore, totalScore) {
-		this.clicksCounter++;
-		this.totalScore++;
+	initGameVariables(
+		initialTotalScore,
+		numberOfClicksToWin,
+		level,
+		timeObj,
+		timeStr,
+		img
+	) {
+		this.clicksCounter = 0;
+		this.image = img;
+		this.level = level;
+		this.time = timeObj;
+		this.timeStr = timeStr;
+		this.numberOfClicksToWin = numberOfClicksToWin;
+		this.totalScore = initialTotalScore;
+		this.timerId = null;
+	}
 
-		if (this.clicksCounter >= this.numberOfClicksToWin) {
-			this.image += 1;
-			this.level += 1;
-			this.numberOfClicksToWin *= 2;
-			this.nextLevel();
-		} else {
-			currentScore.innerText = this.clicksCounter;
-			totalScore.innerText = this.totalScore;
+	modalButtonListener(btnId, proceedFn, proceedFnArgs = []) {
+		const btn = document.getElementById(btnId);
+		const proceed = proceedFn.bind(this);
+		if (btn) {
+			btn.addEventListener('click', () => {
+				this.closeModalWindow();
+				proceed(...proceedFnArgs);
+			});
 		}
 	}
 
-	nextLevel() {
+	monsterListener(currentScore, totalScore, monster, timer, monsterHealth) {
+		this.clicksCounter++;
+		this.totalScore++;
+		currentScore.innerText = this.clicksCounter;
+		totalScore.innerText = this.totalScore;
+		this.setMonsterHealth(monsterHealth);
+
+		if (this.clicksCounter === this.numberOfClicksToWin && this.level === 5) {
+			this.level = 5;
+			this.gameOver(monster, timer);
+			return;
+		}
+
+		if (this.clicksCounter >= this.numberOfClicksToWin && this.level <= 5) {
+			this.image += 1;
+			this.level += 1;
+			this.numberOfClicksToWin *= 2;
+
+			this.nextLevel(monster);
+		}
+	}
+
+	nextLevel(monster) {
 		const user = this.getUserData();
 		this.updateUserDataInLS(user);
 		this.clicksCounter = 0;
 		this.image = user.image;
-		this.initialTotalScore = user.totalScore;
+		this.totalScore = user.totalScore;
 		this.level = user.level;
 		this.numberOfClicksToWin = user.clicksToWin;
 		this.timeStr = user.timeStr;
 
-		this.removeLayout();
 		this.stopTimer();
-		this.runGame('game-layout', clickerTemplate, user.nick);
+		this.removeMonster(monster);
+		this.renderModalWindow(
+			user,
+			nextLevelModalTemplate,
+			'Next level',
+			'next-level',
+			false
+		);
+
+		this.modalButtonListener('next-level', this.runGame, [
+			'game-layout',
+			clickerTemplate,
+			user.nick,
+			auth,
+		]);
+	}
+
+	removeMonster(monster) {
+		setTimeout(() => {
+			monster.style.display = 'none';
+		}, 1000);
 	}
 
 	renderMonster() {
@@ -155,12 +215,19 @@ class ClickerGame extends Rendering {
 		this.updateUserDataInLS(initialUser);
 	}
 
-	runGame(className, templateFn, nick) {
-		this.renderLayout(className, templateFn);
+	runGame(className, templateFn, nick, auth) {
+		this.renderLayout(className, templateFn, auth);
 		this.renderMonster();
 		this.setUserNick(nick);
 		this.gameListeners();
 		this.startTimer();
+	}
+
+	setMonsterHealth(monsterHealth) {
+		monsterHealth.style.width =
+			100 -
+			Math.round((this.clicksCounter * 100) / this.numberOfClicksToWin) +
+			'%';
 	}
 
 	setUserNick(name) {
@@ -176,20 +243,16 @@ class ClickerGame extends Rendering {
 
 	startTimer() {
 		const timer = document.getElementById('time');
-		if (timer) {
-			let seconds = this.time.seconds;
-			let mins = this.time.mins;
 
-			this.timerId = setInterval(() => {
-				++seconds;
-				const { secStr, minStr } = this.getHumanReadableTime(seconds, mins);
+		this.timerId = setInterval(() => {
+			let { secStr, minStr, seconds, mins } = this.getHumanReadableTime();
+			++seconds;
 
-				this.timeStr = minStr + ':' + secStr;
-				timer.innerText = this.timeStr;
-				this.time.seconds = seconds;
-				this.time.mins = mins;
-			}, 1000);
-		}
+			this.timeStr = minStr + ':' + secStr;
+			timer.innerText = this.timeStr;
+			this.time.seconds = seconds;
+			this.time.mins = mins;
+		}, 1000);
 	}
 
 	stopTimer() {
